@@ -38,6 +38,11 @@ public class CustomersController {
 					String.format("customer with id %s %s", 
 							customer.getId(), ErrorType.ALREADY_EXISTS_ERROR.getErrorDescription()));
 		}
+		if (this.customersDao.existsByPhoneNumber(customer.getPhoneNumber())) {
+			throw new ApplicationException(ErrorType.ALREADY_EXISTS_ERROR,
+					String.format("customer with phone number %s %s", 
+							customer.getPhoneNumber(), ErrorType.ALREADY_EXISTS_ERROR.getErrorDescription()));
+		}
 		
 		long id = this.usersController.addUser(customer.getUser());
 		customer.setId(id);

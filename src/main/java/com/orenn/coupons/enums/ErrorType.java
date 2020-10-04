@@ -21,10 +21,7 @@ public enum ErrorType {
 	FORBIDDEN_TYPE(403, "FORBIDDEN_TYPE", "Forbidden type", false),
 	EXCEEDED_ERROR(600, "EXCEEDED_ERROR", "", false),
 	EMPTY_ERROR(400, "EMPTY_ERROR", "cannot be empty", false),
-	LOGIN_FAILED(401, "LOGIN_FAILED", "Login failed, wrong username or password", false),
-	
-	;
-	// add more errors
+	LOGIN_FAILED(401, "LOGIN_FAILED", "Login failed, wrong username or password", false);
 	
 	private int errorCode;
 	private String errorName;

@@ -260,7 +260,8 @@ public class UsersController {
 		}
 		if (!ValidationsUtils.isValidPassword(user.getPassword())) {
 			throw new ApplicationException(ErrorType.INVALID_FORMAT_ERROR, 
-										String.format("%s, %s", ErrorType.INVALID_FORMAT_ERROR.getErrorDescription(), user.getPassword()));
+										String.format("%s, '%s'. password should be 10-16 characters long and contain at lease one capital letter, one small letter, one digit and one special characters", 
+												ErrorType.INVALID_FORMAT_ERROR.getErrorDescription(), user.getPassword()));
 		}
 		if (!ValidationsUtils.isValidEmail(user.getEmail())) {
 			throw new ApplicationException(ErrorType.INVALID_FORMAT_ERROR, 

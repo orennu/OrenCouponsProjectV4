@@ -9,9 +9,12 @@ import com.orenn.coupons.entities.CustomerEntity;
 
 public interface ICustomersDao extends CrudRepository<CustomerEntity, Long>{
 
-	public CustomerEntity findByPhoneNumber(String phone);
+	public CustomerEntity findByPhoneNumber(String phoneNumber);
 
+	public boolean existsByPhoneNumber(String phoneNumber);
+	
 	@Query("FROM CustomerEntity WHERE date_of_birth = ?1")
 	public List<CustomerEntity> findAllByDateOfBirth(String dateOfBirth);
+
 
 }

@@ -48,6 +48,9 @@ public class ValidationsUtils {
 	}
 	
 	public static boolean isValidAddress(String address) throws ApplicationException {
+		if (address.isEmpty()) {
+			return true;
+		}
 		if (isNull(address)) {
 			throw new ApplicationException(ErrorType.NULL_ERROR, String.format("%s address", ErrorType.NULL_ERROR.getErrorDescription()));
 		}
