@@ -45,6 +45,10 @@ public class LoginFilter implements Filter {
 			chain.doFilter(httpRequest, response);
 			return;
 		}
+		if (url.contains("swagger") || url.contains("api-docs") || url.endsWith("/") || url.endsWith("/csrf")) {
+			chain.doFilter(httpRequest, response);
+			return;
+		}
 		
 		String token = httpRequest.getHeader("Authorization");
 		PostLoginData postLoginData = (PostLoginData) cacheController.get(token);

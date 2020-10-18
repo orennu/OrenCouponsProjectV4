@@ -20,8 +20,6 @@ import com.orenn.coupons.utils.ValidationsUtils;
 @Controller
 public class CustomersController {
 	
-	// validations
-	
 	@Autowired
 	private ICustomersDao customersDao;
 
@@ -134,9 +132,15 @@ public class CustomersController {
 					ErrorType.NOT_EXISTS_ERROR.getErrorDescription()));
 		}
 		
+		Optional<CustomerEntity> originalCustomer;
 		try {
-			this.usersController.updateUser(customer.getUser());
-			this.customersDao.save(customer);
+			originalCustomer = this.customersDao.findById(customer.getId());
+			originalCustomer.get().setFirstName(customer.getFirstName());
+			originalCustomer.get().setLastName(customer.getLastName());
+			originalCustomer.get().setAddress(customer.getAddress());
+			originalCustomer.get().setPhoneNumber(customer.getPhoneNumber());
+			this.usersController.updateUser(originalCustomer.get().getUser());
+			this.customersDao.save(originalCustomer.get());
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw new ApplicationException(e, ErrorType.UPDATE_ERROR, ErrorType.UPDATE_ERROR.getErrorDescription());

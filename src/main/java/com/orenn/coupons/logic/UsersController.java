@@ -48,7 +48,7 @@ public class UsersController {
 			String token = StringUtils.generateToken();
 			cacheController.put(token, postLoginData);
 			
-			return new SuccessfulLoginData(token, postLoginData.getType());
+			return new SuccessfulLoginData(user.getId(), token, postLoginData.getType());
 			
 		} catch (ApplicationException e) {
 			throw new ApplicationException(ErrorType.LOGIN_FAILED, ErrorType.LOGIN_FAILED.getErrorDescription());
@@ -60,7 +60,7 @@ public class UsersController {
 	}
 
 	public long addUser(UserEntity user) throws ApplicationException {
-		if (!isUserAttributesValid(user)) {
+		if (!isUserAttributesValid(user, false)) {
 			throw new ApplicationException();
 		}
 		if (isUserExistsByUserName(user.getUserName())) {
@@ -170,7 +170,7 @@ public class UsersController {
 	}
 
 	public void updateUser(UserEntity user) throws ApplicationException {
-		if (!isUserAttributesValid(user)) {
+		if (!isUserAttributesValid(user, true)) {
 			throw new ApplicationException();
 		}
 		if (!isUserExistsById(user.getId())) {
@@ -179,7 +179,6 @@ public class UsersController {
 		}
 		
 		try {
-			user.setPassword(hashPassword(user.getPassword()));
 			this.usersDao.save(user);
 		} catch (Exception e) {
 			throw new ApplicationException(e, ErrorType.UPDATE_ERROR, ErrorType.UPDATE_ERROR.getErrorDescription());
@@ -250,30 +249,32 @@ public class UsersController {
 		}
 	}
 	
-	private boolean isUserAttributesValid(UserEntity user) throws ApplicationException {
+	private boolean isUserAttributesValid(UserEntity user, boolean isUpdate) throws ApplicationException {
 		if (user == null) {
 			throw new ApplicationException(ErrorType.NULL_ERROR, String.format("%s user", ErrorType.NULL_ERROR.getErrorDescription()));
 		}
-		if (!ValidationsUtils.isValidUserName(user.getUserName())) {
-			throw new ApplicationException(ErrorType.INVALID_FORMAT_ERROR, 
-										String.format("%s, %s", ErrorType.INVALID_FORMAT_ERROR.getErrorDescription(), user.getUserName()));
-		}
-		if (!ValidationsUtils.isValidPassword(user.getPassword())) {
-			throw new ApplicationException(ErrorType.INVALID_FORMAT_ERROR, 
-										String.format("%s, '%s'. password should be 10-16 characters long and contain at lease one capital letter, one small letter, one digit and one special characters", 
-												ErrorType.INVALID_FORMAT_ERROR.getErrorDescription(), user.getPassword()));
-		}
-		if (!ValidationsUtils.isValidEmail(user.getEmail())) {
-			throw new ApplicationException(ErrorType.INVALID_FORMAT_ERROR, 
-										String.format("%s, %s", ErrorType.INVALID_FORMAT_ERROR.getErrorDescription(), user.getEmail()));
-		}
-		if (!ValidationsUtils.isValidUserType(user.getType())) {
-			throw new ApplicationException();
-		}
-		if (user.getType().equals(UserType.COMPANY)) {
-			if (!companiesController.isCompanyExistsById(user.getCompany())) {
-				throw new ApplicationException(ErrorType.NOT_EXISTS_ERROR, 
-						String.format("company id %s %s", user.getCompany().getId(), ErrorType.NOT_EXISTS_ERROR.getErrorDescription()));
+		if (!isUpdate) {
+			if (!ValidationsUtils.isValidUserName(user.getUserName())) {
+				throw new ApplicationException(ErrorType.INVALID_FORMAT_ERROR, 
+						String.format("%s, %s", ErrorType.INVALID_FORMAT_ERROR.getErrorDescription(), user.getUserName()));
+			}
+			if (!ValidationsUtils.isValidPassword(user.getPassword())) {
+				throw new ApplicationException(ErrorType.INVALID_FORMAT_ERROR, 
+						String.format("%s, '%s'. password should be 10-16 characters long and contain at lease one capital letter, one small letter, one digit and one special characters", 
+								ErrorType.INVALID_FORMAT_ERROR.getErrorDescription(), user.getPassword()));
+			}
+			if (!ValidationsUtils.isValidEmail(user.getEmail())) {
+				throw new ApplicationException(ErrorType.INVALID_FORMAT_ERROR, 
+						String.format("%s, %s", ErrorType.INVALID_FORMAT_ERROR.getErrorDescription(), user.getEmail()));
+			}
+			if (!ValidationsUtils.isValidUserType(user.getType())) {
+				throw new ApplicationException();
+			}
+			if (user.getType().equals(UserType.COMPANY)) {
+				if (!companiesController.isCompanyExistsById(user.getCompany())) {
+					throw new ApplicationException(ErrorType.NOT_EXISTS_ERROR, 
+							String.format("company id %s %s", user.getCompany().getId(), ErrorType.NOT_EXISTS_ERROR.getErrorDescription()));
+				}
 			}
 		}
 		
