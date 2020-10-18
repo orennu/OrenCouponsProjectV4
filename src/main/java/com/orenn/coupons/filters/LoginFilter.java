@@ -45,7 +45,7 @@ public class LoginFilter implements Filter {
 			chain.doFilter(httpRequest, response);
 			return;
 		}
-		if (url.contains("swagger") || url.contains("api-docs") || url.endsWith("/") || url.endsWith("/csrf")) {
+		if (url.contains("swagger") || url.contains("api-docs")) {
 			chain.doFilter(httpRequest, response);
 			return;
 		}
