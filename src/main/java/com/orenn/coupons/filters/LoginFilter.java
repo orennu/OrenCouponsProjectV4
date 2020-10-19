@@ -16,14 +16,14 @@ import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
 import com.orenn.coupons.beans.PostLoginData;
-import com.orenn.coupons.logic.CacheController;
+import com.orenn.coupons.logic.TokenCacheController;
 
 @Component
 @Order(1)
 public class LoginFilter implements Filter {
 	
 	@Autowired
-	private CacheController cacheController;
+	private TokenCacheController tokenCacheController;
 	
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
 			throws IOException, ServletException {
@@ -51,8 +51,8 @@ public class LoginFilter implements Filter {
 		}
 		
 		String token = httpRequest.getHeader("Authorization");
-		PostLoginData postLoginData = (PostLoginData) cacheController.get(token);
-		System.out.println(cacheController.get(token));
+		PostLoginData postLoginData = (PostLoginData) tokenCacheController.get(token);
+		System.out.println(tokenCacheController.get(token));
 		
 		if (postLoginData != null) {
 			request.setAttribute("userData", postLoginData);

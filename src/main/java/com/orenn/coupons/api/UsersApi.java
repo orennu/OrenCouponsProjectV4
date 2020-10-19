@@ -31,6 +31,10 @@ public class UsersApi {
 		return this.usersController.login(userLoginData);
 	}
 	
+	//logout
+	
+	//reset password
+	
 	@PostMapping("/register")
 	public long addUser(@RequestBody UserEntity user) throws ApplicationException {
 		return this.usersController.addUser(user);

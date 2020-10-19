@@ -25,7 +25,7 @@ public class UsersController {
 	@Autowired
 	private CompaniesController companiesController;
 	@Autowired
-	private CacheController cacheController;
+	private TokenCacheController tokenCacheController;
 
 	public SuccessfulLoginData login(UserLoginData userLoginData) throws ApplicationException {
 		if (!isLoginDataValid(userLoginData)) {
@@ -46,7 +46,7 @@ public class UsersController {
 			}
 			
 			String token = StringUtils.generateToken();
-			cacheController.put(token, postLoginData);
+			tokenCacheController.put(token, postLoginData);
 			
 			return new SuccessfulLoginData(user.getId(), token, postLoginData.getType());
 			
