@@ -32,5 +32,10 @@ public interface IUsersDao extends CrudRepository<UserEntity, Long>{
 	@Query("UPDATE UserEntity SET lock_user = ?2 WHERE id = ?1")
 	public void lock(long id, boolean toLock);
 
+	@Modifying
+	@Transactional
+	@Query("UPDATE UserEntity SET password = ?2 WHERE email = ?1")
+	public void updatePassword(String email, String password);
+
 
 }

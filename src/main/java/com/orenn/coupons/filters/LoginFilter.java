@@ -36,12 +36,17 @@ public class LoginFilter implements Filter {
 		}
 		
 		String url = httpRequest.getRequestURL().toString();
+		System.out.println(url);
 		
 		if (url.endsWith("/register")) {
 			chain.doFilter(httpRequest, response);
 			return;
 		}
 		if (url.endsWith("/login")) {
+			chain.doFilter(httpRequest, response);
+			return;
+		}
+		if (url.contains("reset-password")) {
 			chain.doFilter(httpRequest, response);
 			return;
 		}
@@ -52,7 +57,6 @@ public class LoginFilter implements Filter {
 		
 		String token = httpRequest.getHeader("Authorization");
 		PostLoginData postLoginData = (PostLoginData) tokenCacheController.get(token);
-		System.out.println(tokenCacheController.get(token));
 		
 		if (postLoginData != null) {
 			request.setAttribute("userData", postLoginData);

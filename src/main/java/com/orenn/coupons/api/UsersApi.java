@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.orenn.coupons.beans.ResetPasswordData;
 import com.orenn.coupons.beans.SuccessfulLoginData;
 import com.orenn.coupons.beans.UserLoginData;
 import com.orenn.coupons.entities.UserEntity;
@@ -31,9 +32,20 @@ public class UsersApi {
 		return this.usersController.login(userLoginData);
 	}
 	
-	//logout
+	@PostMapping("/reset-password/code")
+	public void addResetPasswordCode(@RequestBody ResetPasswordData resetPasswordData) throws ApplicationException {
+		this.usersController.addResetPasswordCode(resetPasswordData);
+	}
 	
-	//reset password
+	@GetMapping("/reset-password/code/{code}")
+	public void verifyResetPasswordCode(@PathVariable String code) throws ApplicationException {
+		this.usersController.verifyResetPasswordCode(code);
+	}
+	
+	@PostMapping("/reset-password")
+	public void resetPassword(@RequestBody ResetPasswordData resetPasswordData) throws ApplicationException {
+		this.usersController.resetPassword(resetPasswordData);
+	}
 	
 	@PostMapping("/register")
 	public long addUser(@RequestBody UserEntity user) throws ApplicationException {
@@ -78,6 +90,11 @@ public class UsersApi {
 	@PutMapping(value = "/{id}")
 	public void lockUser(@PathVariable("id") long id, @RequestParam("lock") boolean toLock) throws ApplicationException {
 		this.usersController.lockUser(id, toLock);
+	}
+	
+	@DeleteMapping("/logout/{token}")
+	public void logout(@PathVariable("token") String token) throws ApplicationException {
+		this.usersController.logout(token);
 	}
 	
 	@DeleteMapping("/{id}")

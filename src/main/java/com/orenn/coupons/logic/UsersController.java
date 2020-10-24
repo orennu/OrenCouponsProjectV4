@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
 import com.orenn.coupons.beans.PostLoginData;
+import com.orenn.coupons.beans.ResetPasswordData;
 import com.orenn.coupons.beans.SuccessfulLoginData;
 import com.orenn.coupons.beans.UserLoginData;
 import com.orenn.coupons.dao.IUsersDao;
@@ -26,6 +27,8 @@ public class UsersController {
 	private CompaniesController companiesController;
 	@Autowired
 	private TokenCacheController tokenCacheController;
+	@Autowired
+	private CodeCacheController codeCacheController;
 
 	public SuccessfulLoginData login(UserLoginData userLoginData) throws ApplicationException {
 		if (!isLoginDataValid(userLoginData)) {
@@ -77,6 +80,42 @@ public class UsersController {
 			return this.usersDao.save(user).getId();
 		} catch (Exception e) {
 			throw new ApplicationException(e, ErrorType.CREATE_ERROR, ErrorType.CREATE_ERROR.getErrorDescription());
+		}
+	}
+	
+	public void addResetPasswordCode(ResetPasswordData resetPasswordData) throws ApplicationException {
+		if (resetPasswordData.getCode() == null) {
+			throw new ApplicationException(ErrorType.NULL_ERROR, ErrorType.NULL_ERROR.getErrorDescription());
+		}
+		if (isUserExistsByEmail(resetPasswordData.getEmail())) {
+			codeCacheController.put(resetPasswordData.getCode(), resetPasswordData.getEmail());
+		}
+	}
+	
+	public void verifyResetPasswordCode(String code) throws ApplicationException {
+		if (codeCacheController.get(code) == null) {
+			throw new ApplicationException(ErrorType.NOT_EXISTS_ERROR, 
+					String.format("code %s", ErrorType.NOT_EXISTS_ERROR.getErrorDescription()));
+		}
+	}
+	
+	public void resetPassword(ResetPasswordData resetPasswordData) throws ApplicationException {
+		if (codeCacheController.get(resetPasswordData.getCode()) == null) {
+			throw new ApplicationException(ErrorType.NOT_EXISTS_ERROR, 
+					String.format("code %s", ErrorType.NOT_EXISTS_ERROR.getErrorDescription()));
+		}
+		if (!ValidationsUtils.isValidPassword(resetPasswordData.getPassword())) {
+			throw new ApplicationException(ErrorType.INVALID_FORMAT_ERROR, 
+					String.format("%s, '%s'. password should be 10-16 characters long and contain at lease one capital letter, one small letter, one digit and one special characters", 
+							ErrorType.INVALID_FORMAT_ERROR.getErrorDescription(), resetPasswordData.getPassword()));
+		}
+		try {
+			String password = hashPassword(resetPasswordData.getPassword());
+			String email = (String) codeCacheController.get(resetPasswordData.getCode());
+			this.usersDao.updatePassword(email, password);
+			codeCacheController.remove(resetPasswordData.getCode());
+		} catch (Exception e) {
+			throw new ApplicationException(e, ErrorType.UPDATE_ERROR, ErrorType.UPDATE_ERROR.getErrorDescription());
 		}
 	}
 
@@ -197,6 +236,10 @@ public class UsersController {
 		}
 	}
 
+	public void logout(String token) throws ApplicationException {
+		tokenCacheController.remove(token);
+	}
+	
 	public void deleteUserById(long id) throws ApplicationException {
 		if (!isUserExistsById(id)) {
 			throw new ApplicationException(ErrorType.NOT_EXISTS_ERROR, 
@@ -301,6 +344,6 @@ public class UsersController {
 		String hashedPassword = StringUtils.generateHashedPassword(password);
 		return hashedPassword;
 	}
-	
+
 }
 

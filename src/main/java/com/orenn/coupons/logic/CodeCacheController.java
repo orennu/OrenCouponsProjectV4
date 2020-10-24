@@ -3,15 +3,18 @@ package com.orenn.coupons.logic;
 import java.util.HashMap;
 import java.util.Map;
 
-public class CodeCahceController {
+import org.springframework.stereotype.Component;
+
+@Component
+public class CodeCacheController {
 	
-	private Map<String, Object> codeMap;
+	private Map<String, String> codeMap;
 	
-	public CodeCahceController() {
-		this.codeMap = new HashMap<String, Object>();
+	public CodeCacheController() {
+		this.codeMap = new HashMap<String, String>();
 	}
 	
-	public void put(String key, Object value) {
+	public void put(String key, String value) {
 		this.codeMap.put(key, value);
 	}
 	
@@ -23,7 +26,7 @@ public class CodeCahceController {
 		this.codeMap.remove(key);
 	}
 	
-	public boolean isContainsValue(Object value) {
+	public boolean isContainsValue(String value) {
 		return this.codeMap.containsValue(value);
 	}
 
