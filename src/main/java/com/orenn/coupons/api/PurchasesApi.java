@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.orenn.coupons.beans.PurchaseData;
 import com.orenn.coupons.entities.PurchaseEntity;
 import com.orenn.coupons.exceptions.ApplicationException;
 import com.orenn.coupons.logic.PurchasesController;
@@ -71,6 +72,11 @@ public class PurchasesApi {
 	@GetMapping(value = "/count/search", params = "couponId")
 	public long getPurchasesCountByCouponId(@RequestParam("couponId") long couponId) throws ApplicationException {
 		return this.purchasesController.getPurchasesCountByCouponId(couponId);
+	}
+	
+	@GetMapping(value = "/search", params = "companyId")
+	public List<PurchaseData> getPurchasesByCompanyId(@RequestParam("companyId") long companyId) throws ApplicationException {
+		return this.purchasesController.getPurchasesByCompanyId(companyId);
 	}
 	
 	@DeleteMapping("/{id}")

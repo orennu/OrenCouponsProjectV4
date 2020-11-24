@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 
+import com.orenn.coupons.beans.PurchaseData;
 import com.orenn.coupons.entities.PurchaseEntity;
 
 public interface IPurchasesDao extends CrudRepository<PurchaseEntity, Long>{
@@ -27,5 +28,8 @@ public interface IPurchasesDao extends CrudRepository<PurchaseEntity, Long>{
 	
 	@Query("SELECT CASE WHEN COUNT(p.id) > 0 THEN true ELSE false END FROM PurchaseEntity p WHERE customer_id = ?1 AND coupon_id = ?2")
 	public boolean existsByCustomerIdAndCouponId(long customerId, long couponId);
+	
+	@Query("SELECT new com.orenn.coupons.beans.PurchaseData(p.id, p.purchaseDate, p.quantity, cp.title, cp.price, cp.category, cs.firstName, cs.lastName) FROM PurchaseEntity p JOIN CouponEntity cp ON p.couponId = cp.id JOIN CompanyEntity cm ON cp.company = cm.id JOIN CustomerEntity cs ON p.customer = cs.id WHERE cm.id = ?1")
+	public List<PurchaseData> findAllByComapnyId(long comapnyId);
 
 }

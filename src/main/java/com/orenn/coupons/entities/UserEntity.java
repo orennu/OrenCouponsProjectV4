@@ -10,7 +10,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.orenn.coupons.enums.UserType;
 
 @Entity
@@ -38,9 +37,8 @@ public class UserEntity {
 	@Column(name = "lock_user", nullable = false, columnDefinition = "boolean default false")
 	private boolean lockUser;
 	
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "company_id", nullable = true, unique = false)
-	@JsonBackReference(value = "user_company_reference")
 	private CompanyEntity company;
 	
 	public UserEntity() {

@@ -13,7 +13,6 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
 @Table(name = "customers")
@@ -43,7 +42,6 @@ public class CustomerEntity {
 	private UserEntity user;
 	
 	@OneToMany(mappedBy = "customer", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
-	@JsonManagedReference(value = "purchase_customer_reference")
 	private List<PurchaseEntity> purchases;
 	
 	public CustomerEntity() {
@@ -109,14 +107,6 @@ public class CustomerEntity {
 		this.user = user;
 	}
 	
-	public List<PurchaseEntity> getPurchases() {
-		return purchases;
-	}
-
-	public void setPurchases(List<PurchaseEntity> purchases) {
-		this.purchases = purchases;
-	}
-
 	@Override
 	public String toString() {
 		return "CustomerEntity [id=" + id + ", firstName=" + firstName + ", lastName=" + lastName + ", address="

@@ -8,6 +8,7 @@ import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
+import com.orenn.coupons.beans.PurchaseData;
 import com.orenn.coupons.dao.IPurchasesDao;
 import com.orenn.coupons.entities.PurchaseEntity;
 import com.orenn.coupons.enums.ErrorType;
@@ -152,6 +153,17 @@ public class PurchasesController {
 			return this.purchasesDao.getCountByCouponId(couponId);
 		} catch (Exception e) {
 			throw new ApplicationException(e, ErrorType.QUERY_ERROR, ErrorType.QUERY_ERROR.getErrorDescription());
+		}
+	}
+	
+	//TODO write this method properly
+	public List<PurchaseData> getPurchasesByCompanyId(long companyId) throws ApplicationException {
+		try {
+			return this.purchasesDao.findAllByComapnyId(companyId);
+		} catch (Exception e) {
+			System.out.println("error start hereeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee");
+			e.printStackTrace();
+			throw new ApplicationException(String.format("%s", e.getMessage()));
 		}
 	}
 	

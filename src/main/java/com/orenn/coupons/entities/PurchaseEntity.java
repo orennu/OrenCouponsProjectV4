@@ -11,7 +11,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 
 @Entity
 @Table(name = "purchases")
@@ -31,9 +30,8 @@ public class PurchaseEntity {
 	@Column(name = "coupon_id")
 	private long couponId;
 	
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "customer_id", nullable = true, unique = false)
-	@JsonBackReference(value = "purchase_customer_reference")
 	private CustomerEntity customer;
 	
 	public PurchaseEntity() {

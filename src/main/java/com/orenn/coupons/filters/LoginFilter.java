@@ -38,6 +38,10 @@ public class LoginFilter implements Filter {
 		String url = httpRequest.getRequestURL().toString();
 		System.out.println(url);
 		
+		if (url.endsWith("coupons/") && !url.contains("admin")) {
+			chain.doFilter(httpRequest, response);
+			return;
+		}
 		if (url.endsWith("/register")) {
 			chain.doFilter(httpRequest, response);
 			return;

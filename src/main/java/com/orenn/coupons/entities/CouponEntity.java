@@ -16,7 +16,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.orenn.coupons.enums.CouponCategory;
 import com.orenn.coupons.utils.DailyTask;
 
@@ -54,9 +53,8 @@ public class CouponEntity {
 	@Column(name = "expiration_date", nullable = false)
 	private Date expirationDate;
 	
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "company_id", nullable = true, unique = false)
-	@JsonBackReference(value = "coupon_company_reference")
 	private CompanyEntity company;
 	
 	public CouponEntity() {

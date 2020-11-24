@@ -13,7 +13,6 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.orenn.coupons.enums.IndustryType;
 
 @Entity
@@ -42,11 +41,9 @@ public class CompanyEntity {
 	private IndustryType industry;
 	
 	@OneToMany(mappedBy = "company", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
-	@JsonManagedReference(value = "user_company_reference")
 	private List<UserEntity> users;
 	
 	@OneToMany(mappedBy = "company", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
-	@JsonManagedReference(value = "coupon_company_reference")
 	private List<CouponEntity> coupons;
 	
 	public CompanyEntity() {
@@ -100,22 +97,6 @@ public class CompanyEntity {
 		this.industry = industry;
 	}
 	
-	public List<UserEntity> getUsers() {
-		return users;
-	}
-
-	public void setUsers(List<UserEntity> users) {
-		this.users = users;
-	}
-
-	public List<CouponEntity> getCoupons() {
-		return coupons;
-	}
-
-	public void setCoupons(List<CouponEntity> coupons) {
-		this.coupons = coupons;
-	}
-
 	@Override
 	public String toString() {
 		return "CompanyEntity [id=" + id + ", name=" + name + ", email=" + email + ", phoneNumber=" + phoneNumber
