@@ -262,10 +262,10 @@ public class CouponsController {
 		if (coupon.getPrice() <= 0) {
 			throw new ApplicationException(ErrorType.INVALID_PRICE_ERROR, ErrorType.INVALID_PRICE_ERROR.getErrorDescription());
 		}
-		if (!ValidationsUtils.isValidUrl(coupon.getImage())) {
-			throw new ApplicationException(ErrorType.INVALID_FORMAT_ERROR, 
-										String.format("%s, image must use URL format", ErrorType.INVALID_FORMAT_ERROR.getErrorDescription()));
-		}
+//		if (!ValidationsUtils.isValidUrl(coupon.getImage())) {
+//			throw new ApplicationException(ErrorType.INVALID_FORMAT_ERROR, 
+//										String.format("%s, image must use URL format", ErrorType.INVALID_FORMAT_ERROR.getErrorDescription()));
+//		}
 		if (coupon.getQuantity() <= 0) {
 			throw new ApplicationException(ErrorType.INVALID_QUANTITY_ERROR, 
 										String.format("%s, cannot be 0 or less", ErrorType.INVALID_QUANTITY_ERROR.getErrorDescription()));

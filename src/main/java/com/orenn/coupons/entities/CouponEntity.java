@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.Timer;
 
 import javax.annotation.PostConstruct;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -14,6 +15,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import com.orenn.coupons.enums.CouponCategory;
@@ -41,8 +43,9 @@ public class CouponEntity {
 	@Enumerated(EnumType.STRING)
 	private CouponCategory category;
 	
-	@Column(name = "image", nullable = false)
-	private String image;
+	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	@JoinColumn(name = "image_uuid", referencedColumnName = "id", unique = true, nullable = false)
+	private FileEntity image;
 	
 	@Column(name = "quantity", nullable = false)
 	private int quantity;
@@ -100,11 +103,11 @@ public class CouponEntity {
 		this.category = category;
 	}
 
-	public String getImage() {
+	public FileEntity getImage() {
 		return image;
 	}
 
-	public void setImage(String image) {
+	public void setImage(FileEntity image) {
 		this.image = image;
 	}
 
