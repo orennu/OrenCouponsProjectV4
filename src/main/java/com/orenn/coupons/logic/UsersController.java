@@ -139,6 +139,21 @@ public class UsersController {
 		
 		return user.get();
 	}
+	
+	public long getUserCompanyId(long id) throws ApplicationException {
+		if (id < 1) {
+			throw new ApplicationException(ErrorType.INVALID_FORMAT_ERROR, String.format("%s, id cannot be less than 1", 
+					ErrorType.INVALID_FORMAT_ERROR.getErrorDescription()));
+		}
+		
+		Optional<UserEntity> user;
+		try {
+			user = this.usersDao.findById(id);
+			return user.get().getCompany().getId();
+		} catch (Exception e) {
+			throw new ApplicationException(e, ErrorType.QUERY_ERROR, ErrorType.QUERY_ERROR.getErrorDescription());
+		}
+	}
 
 	public List<UserEntity> getAllUsers() throws ApplicationException {
 		try {

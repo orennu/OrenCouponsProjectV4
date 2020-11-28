@@ -5,7 +5,6 @@ import java.util.Date;
 import java.util.Timer;
 
 import javax.annotation.PostConstruct;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -15,7 +14,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import com.orenn.coupons.enums.CouponCategory;
@@ -43,9 +41,8 @@ public class CouponEntity {
 	@Enumerated(EnumType.STRING)
 	private CouponCategory category;
 	
-	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-	@JoinColumn(name = "image_uuid", referencedColumnName = "id", unique = true, nullable = false)
-	private FileEntity image;
+	@Column(name = "image_uuid", nullable = false)
+	private String imageUuid;
 	
 	@Column(name = "quantity", nullable = false)
 	private int quantity;
@@ -103,12 +100,12 @@ public class CouponEntity {
 		this.category = category;
 	}
 
-	public FileEntity getImage() {
-		return image;
+	public String getImageUuid() {
+		return imageUuid;
 	}
-
-	public void setImage(FileEntity image) {
-		this.image = image;
+	
+	public void setImageUuid(String uuid) {
+		this.imageUuid = uuid;
 	}
 
 	public int getQuantity() {
@@ -146,7 +143,7 @@ public class CouponEntity {
 	@Override
 	public String toString() {
 		return "CouponEntity [id=" + id + ", title=" + title + ", description=" + description + ", price=" + price
-				+ ", category=" + category + ", image=" + image + ", quantity=" + quantity + ", startDate=" + startDate
+				+ ", category=" + category + ", image=" + imageUuid + ", quantity=" + quantity + ", startDate=" + startDate
 				+ ", expirationDate=" + expirationDate + ", company=" + company + "]";
 	}
 

@@ -57,6 +57,11 @@ public class UsersApi {
 		return this.usersController.getUserById(id);
 	}
 	
+	@GetMapping("/{id}/companyId")
+	public long getUserCompanyId(@PathVariable("id") long id) throws ApplicationException {
+		return this.usersController.getUserCompanyId(id);
+	}
+	
 	@GetMapping
 	public List<UserEntity> getAllUsers() throws ApplicationException {
 		return this.usersController.getAllUsers();

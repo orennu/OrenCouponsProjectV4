@@ -47,6 +47,18 @@ public class ValidationsUtils {
 		return matcher.matches();
 	}
 	
+	public static boolean isValidUuid(String uuid) throws ApplicationException {
+		if (isNull(uuid)) {
+			throw new ApplicationException(ErrorType.NULL_ERROR, String.format("%s uuid", ErrorType.NULL_ERROR.getErrorDescription()));
+		}
+		
+		String uuidRegex = "[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}";
+		Pattern uuidPattern = Pattern.compile(uuidRegex);
+		Matcher matcher = uuidPattern.matcher(uuid);
+		
+		return matcher.matches();
+	}
+	
 	public static boolean isValidAddress(String address) throws ApplicationException {
 		if (address.isEmpty()) {
 			return true;

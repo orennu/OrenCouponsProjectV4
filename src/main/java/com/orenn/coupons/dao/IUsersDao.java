@@ -37,5 +37,4 @@ public interface IUsersDao extends CrudRepository<UserEntity, Long>{
 	@Query("UPDATE UserEntity SET password = ?2 WHERE email = ?1")
 	public void updatePassword(String email, String password);
 
-
 }

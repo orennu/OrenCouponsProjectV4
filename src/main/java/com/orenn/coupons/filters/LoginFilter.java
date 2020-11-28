@@ -36,7 +36,6 @@ public class LoginFilter implements Filter {
 		}
 		
 		String url = httpRequest.getRequestURL().toString();
-		System.out.println(url);
 		
 		if (url.endsWith("coupons/") && !url.contains("admin")) {
 			chain.doFilter(httpRequest, response);
@@ -55,6 +54,10 @@ public class LoginFilter implements Filter {
 			return;
 		}
 		if (url.contains("swagger") || url.contains("api-docs")) {
+			chain.doFilter(httpRequest, response);
+			return;
+		}
+		if (url.contains("files")) {
 			chain.doFilter(httpRequest, response);
 			return;
 		}

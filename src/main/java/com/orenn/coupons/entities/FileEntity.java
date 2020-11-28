@@ -2,15 +2,11 @@ package com.orenn.coupons.entities;
 
 import java.util.Arrays;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.GenericGenerator;
@@ -33,9 +29,6 @@ public class FileEntity {
 	@Lob
 	private byte[] data;
 	
-	@OneToOne(mappedBy = "image")
-	private CouponEntity coupon;
-
 	public FileEntity() {
 	}
 
@@ -71,18 +64,10 @@ public class FileEntity {
 		this.data = data;
 	}
 
-	public CouponEntity getCoupon() {
-		return coupon;
-	}
-
-	public void setCoupon(CouponEntity coupon) {
-		this.coupon = coupon;
-	}
-
 	@Override
 	public String toString() {
 		return "FileEntity [id=" + id + ", fileName=" + fileName + ", fileType=" + fileType + ", data="
-				+ Arrays.toString(data) + ", coupon=" + coupon + "]";
+				+ Arrays.toString(data) + "]";
 	}
 	
 }
