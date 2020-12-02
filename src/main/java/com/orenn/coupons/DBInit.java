@@ -28,7 +28,9 @@ public class DBInit {
 		superadmin.setEmail("superadmin@localhost.local");
 		superadmin.setType(UserType.ADMIN);
 		
-		this.usersDao.save(superadmin);
+		if (!usersDao.existsByEmail(superadmin.getEmail())) {
+			this.usersDao.save(superadmin);
+		}
 		
 	}
 
