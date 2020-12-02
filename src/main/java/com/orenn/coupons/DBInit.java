@@ -24,7 +24,7 @@ public class DBInit {
 		
 		UserEntity superadmin = new UserEntity();
 		superadmin.setUserName("superadmin");
-		superadmin.setPassword(userController.hashPassword("Zubur123!!"));
+		superadmin.setPassword(userController.hashPassword("Test12345!!"));
 		superadmin.setEmail("superadmin@localhost.local");
 		superadmin.setType(UserType.ADMIN);
 		
