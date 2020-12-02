@@ -95,7 +95,7 @@ public class ValidationsUtils {
 			throw new ApplicationException(ErrorType.NULL_ERROR, String.format("%s username", ErrorType.NULL_ERROR.getErrorDescription()));
 		}
 		
-		String userNameRegex = "^[a-z][a-z0-9]{2,20}$";
+		String userNameRegex = "^[a-z][a-z0-9_]{2,20}$";
 		Pattern userNamePattern = Pattern.compile(userNameRegex);
 		Matcher matcher = userNamePattern.matcher(userName);
 		

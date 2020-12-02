@@ -25,8 +25,8 @@ public class PurchasesApi {
 	private PurchasesController purchasesController;
 	
 	@PostMapping
-	public long addPurchase(@RequestBody PurchaseEntity purchase) throws ApplicationException {
-		return this.purchasesController.addPurchase(purchase);
+	public void addPurchase(@RequestBody PurchaseEntity[] purchaseArray) throws ApplicationException {
+		this.purchasesController.addPurchase(purchaseArray);
 	}
 	
 	@GetMapping("/{id}")
@@ -55,7 +55,7 @@ public class PurchasesApi {
 	}
 	
 	@GetMapping(value = "/search", params = "customerId")
-	public List<PurchaseEntity> getPurchasesByCustomerId(@RequestParam("customerId") long customerId) throws ApplicationException {
+	public List<PurchaseData> getPurchasesByCustomerId(@RequestParam("customerId") long customerId) throws ApplicationException {
 		return this.purchasesController.getPurchasesByCustomerId(customerId);
 	}
 	

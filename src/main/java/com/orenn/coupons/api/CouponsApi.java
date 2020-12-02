@@ -64,7 +64,6 @@ public class CouponsApi {
 		this.couponsController.updateCoupon(coupon);
 	}
 	
-	//for testing only
 	@PutMapping(value = "{id}/purchase", params = {"quantity", "cancel"})
 	public void updateCouponQuantityById(@PathVariable("id") long id, @RequestParam("quantity") int quantity, @RequestParam("cancel") boolean cancel) throws ApplicationException {
 		this.couponsController.updateCouponQuantityById(id, quantity, cancel);
@@ -75,7 +74,6 @@ public class CouponsApi {
 		this.couponsController.deleteCouponById(id);
 	}
 	
-	//for testing only
 	@DeleteMapping("/expired")
 	public void deleteExpiredCoupons() throws ApplicationException {
 		this.couponsController.deleteExpiredCoupons();

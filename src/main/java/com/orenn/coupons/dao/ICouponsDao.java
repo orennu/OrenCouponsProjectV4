@@ -29,10 +29,12 @@ public interface ICouponsDao extends CrudRepository<CouponEntity, Long>{
 	@Query("UPDATE CouponEntity SET quantity = quantity + ?2 WHERE id = ?1")
 	public void updateCouponQuantityById(long id, int quantity);
 	
+	/*
+	 *  We don't really delete coupons to not loose reference to old customers' purchases
+	 */
 	@Modifying
 	@Transactional
 	@Query("UPDATE CouponEntity SET quantity = 0 WHERE id = ?1")
-	// We don't really delete coupons to not loose reference to old customers' purchases
 	public void deleteById(long id);
 	
 	@Modifying

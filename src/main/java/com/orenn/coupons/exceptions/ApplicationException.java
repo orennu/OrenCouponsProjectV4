@@ -4,10 +4,8 @@ import com.orenn.coupons.enums.ErrorType;
 
 public class ApplicationException extends Exception {
 	
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
+
 	private ErrorType errorType;
 	
 	public ApplicationException() {

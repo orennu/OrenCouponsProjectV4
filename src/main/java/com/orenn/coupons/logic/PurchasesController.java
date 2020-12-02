@@ -26,20 +26,32 @@ public class PurchasesController {
 	@Autowired
 	private CouponsController couponsController;
 	
+	@Autowired
+	private CompaniesController companiesController;
+	
 	@Transactional
-	public long addPurchase(PurchaseEntity purchase) throws ApplicationException {
-		if (!isPurchaseAttributesValid(purchase)) {
-			throw new ApplicationException();
-		}
-		if (isPurchaseExistsByCustomerAndCouponId(purchase.getCustomer().getId(), purchase.getCouponId())) {
-			throw new ApplicationException(ErrorType.ALREADY_EXISTS_ERROR, String.format("purchase %s", ErrorType.ALREADY_EXISTS_ERROR.getErrorDescription()));
-		}
-		
-		try {
-			this.couponsController.updateCouponQuantityById(purchase.getCouponId(), purchase.getQuantity(), false);
-			return this.purchasesDao.save(purchase).getId();
-		} catch (Exception e) {
-			throw new ApplicationException(e, ErrorType.CREATE_ERROR, ErrorType.CREATE_ERROR.getErrorDescription());
+	public void addPurchase(PurchaseEntity[] purchaseArray) throws ApplicationException {
+		for (PurchaseEntity purchase : purchaseArray) {
+			if (!isPurchaseAttributesValid(purchase)) {
+				throw new ApplicationException();
+			}
+			if (isPurchaseExistsByCustomerAndCouponId(purchase.getCustomer().getId(), purchase.getCouponId())) {
+				try {
+					this.couponsController.updateCouponQuantityById(purchase.getCouponId(), purchase.getQuantity(), false);
+					this.purchasesDao.updatePurchaseQuantityByCustomerAndCouponId(purchase.getCustomer().getId(), purchase.getCouponId(), purchase.getQuantity());
+				} catch (Exception e) {
+					throw new ApplicationException(e, ErrorType.UPDATE_ERROR, ErrorType.UPDATE_ERROR.getErrorDescription());
+				}
+			}
+			else {
+				try {
+					this.couponsController.updateCouponQuantityById(purchase.getCouponId(), purchase.getQuantity(), false);
+					this.purchasesDao.save(purchase);
+				} catch (Exception e) {
+					throw new ApplicationException(e, ErrorType.CREATE_ERROR, ErrorType.CREATE_ERROR.getErrorDescription());
+				}
+			}
+			
 		}
 	}
 
@@ -104,7 +116,7 @@ public class PurchasesController {
 		}
 	}
 	
-	public List<PurchaseEntity> getPurchasesByCustomerId(long customerId) throws ApplicationException {
+	public List<PurchaseData> getPurchasesByCustomerId(long customerId) throws ApplicationException {
 		if (!this.customersController.isCustomerExistsById(customerId)) {
 			throw new ApplicationException(ErrorType.NOT_EXISTS_ERROR,
 					String.format("company id %s %s", customerId, ErrorType.NOT_EXISTS_ERROR.getErrorDescription()));
@@ -156,14 +168,15 @@ public class PurchasesController {
 		}
 	}
 	
-	//TODO write this method properly
 	public List<PurchaseData> getPurchasesByCompanyId(long companyId) throws ApplicationException {
+		if (!this.companiesController.isCompanyExistsById(companyId)) {
+			throw new ApplicationException(ErrorType.NOT_EXISTS_ERROR,
+					String.format("company id %s %s", companyId, ErrorType.NOT_EXISTS_ERROR.getErrorDescription()));
+		}
 		try {
 			return this.purchasesDao.findAllByComapnyId(companyId);
 		} catch (Exception e) {
-			System.out.println("error start hereeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee");
-			e.printStackTrace();
-			throw new ApplicationException(String.format("%s", e.getMessage()));
+			throw new ApplicationException(e, ErrorType.QUERY_ERROR, ErrorType.QUERY_ERROR.getErrorDescription());
 		}
 	}
 	

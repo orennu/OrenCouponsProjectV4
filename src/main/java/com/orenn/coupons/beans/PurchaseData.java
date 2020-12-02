@@ -14,9 +14,10 @@ public class PurchaseData {
 	private CouponCategory couponCategory;
 	private String customerFirstName;
 	private String customerLastName;
+	private String couponImageUuid;
 	
 	public PurchaseData(long purchaseId, Date purchaseDate, int purchaseQuantity, String couponTitle, float couponPrice,
-			CouponCategory couponCategory, String customerFirstName, String customerLastName) {
+			CouponCategory couponCategory, String customerFirstName, String customerLastName, String couponImageUuid) {
 		this.purchaseId = purchaseId;
 		this.purchaseDate = purchaseDate;
 		this.purchaseQuantity = purchaseQuantity;
@@ -25,7 +26,20 @@ public class PurchaseData {
 		this.couponCategory = couponCategory;
 		this.customerFirstName = customerFirstName;
 		this.customerLastName = customerLastName;
+		this.couponImageUuid = couponImageUuid;
 	}
+	
+	public PurchaseData(Date purchaseDate, int purchaseQuantity, String couponTitle, float couponPrice,
+			CouponCategory couponCategory, String couponImageUuid) {
+		this.purchaseDate = purchaseDate;
+		this.purchaseQuantity = purchaseQuantity;
+		this.couponTitle = couponTitle;
+		this.couponPrice = couponPrice;
+		this.couponCategory = couponCategory;
+		this.couponImageUuid = couponImageUuid;
+	}
+
+
 
 	public PurchaseData() {
 	}
@@ -93,13 +107,21 @@ public class PurchaseData {
 	public void setCustomerLastName(String customerLastName) {
 		this.customerLastName = customerLastName;
 	}
+	
+	public String getCouponImageUuid() {
+		return couponImageUuid;
+	}
+
+	public void setCouponImageUuid(String couponImageUuid) {
+		this.couponImageUuid = couponImageUuid;
+	}
 
 	@Override
 	public String toString() {
 		return "PurchaseData [purchaseId=" + purchaseId + ", purchaseDate=" + purchaseDate + ", purchaseQuantity="
 				+ purchaseQuantity + ", couponTitle=" + couponTitle + ", couponPrice=" + couponPrice
 				+ ", couponCategory=" + couponCategory + ", customerFirstName=" + customerFirstName
-				+ ", customerLastName=" + customerLastName + "]";
+				+ ", customerLastName=" + customerLastName + ", couponImageUuid=" + couponImageUuid + "]";
 	}
-	
+
 }
